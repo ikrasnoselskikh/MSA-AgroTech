@@ -1,0 +1,56 @@
+@startuml
+
+title Система мониторинга свинокомплексов. Контекстная диаграмма C1
+
+top to bottom direction
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(director, "Директор", "Управление компанией")
+Person(agronomist, "Агроном", "Мониторинг агрокультур")
+Person(zootechnical, "Зоотехник", "Мониторинг животноводства")
+Person(mechanic, "Механик", "Мониторинг техники")
+Person(analyst, "Аналитик", "Работает с аналитическими инструментами")
+
+System_Boundary(system, AgroTech, Система управления компанией) {
+    System_Boundary(central, Центральный сервер) {
+        System(stream, Видео-стриминг, Система хостинга и стриминга видео-данных)
+        System(users, Каталог пользователей, Система управления доступами и каталогами пользователей)
+        System(zoo, Животноводство, Система мониторинга животноводческого сектора)
+        System(agro, Агро, Система мониторинга агро-сектора)
+        System(warehouse, Склад, Система управления ресурсами)
+        System(notifications, Уведомления, Система отправки уведомлений)
+        System(ai, ИИ, Система ИИ-агентов)
+    }
+    System_Boundary(departments, Филиалы) {
+        System(tech_management, Управление техникой, Система мониторинга работоспособности техники)
+        System(tech_drivers, Драйверы техники, Система интеграции с техникой разных вендеров)
+        System(a_health, Здоровье.Агро, Система мониторинга метрик агрокультур)
+        System(z_health, Здоровье.Животноводство, Система мониторинга метрик животных)
+        System(w_health, Здоровье.Вода, Система мониторинга состояния водообеспечения)
+        System(provider, Провайдер, Система интеграции с ЦС)
+    }
+}
+
+System_Boundary(ext_notifications_systems, Отправка уведомлений) {
+    System_Ext(firebase, Firebase, Система отправки Push-уведомлений)
+    System_Ext(hms, HMS, Система отправки Push-уведомлений)
+    System_Ext(sms, SMS, Система отправки SMS-уведомлений)
+    System_Ext(call, Phone Call, Система АТС (оповещения))
+}
+
+Rel_R(director, system, "Контролирует процессы системы")
+Rel(agronomist, system, "Контролирует работу агро-процессов")
+Rel(zootechnical, system, "Контролирует работу животноводческих процессов")
+Rel(mechanic, system, "Контролирует работу техники")
+Rel(analyst, system, "Производит анализ данных")
+
+Rel(ext_notifications_systems, agronomist, "Отправляет уведомления")
+Rel(ext_notifications_systems, zootechnical, "Отправляет уведомления")
+Rel(ext_notifications_systems, mechanic, "Отправляет уведомления")
+
+Rel(system, ext_notifications_systems, "Инициирует отправку уведомлений")
+Rel(central, departments, Агрегирует данные)
+Rel_R(departments, central, Отправляет метрики)
+
+@enduml
