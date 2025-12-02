@@ -13,6 +13,8 @@ Person(mechanic, "Механик", "Мониторинг техники")
 Person(analyst, "Аналитик", "Работает с аналитическими инструментами")
 
 System_Boundary(system, AgroTech, Система управления компанией) {
+    System(web_central, Web, Административная панель ЦС)
+    System(mobile_app, App, Мобильное приложение)
     System_Boundary(central, Центральный сервер) {
         System(stream, Видео-стриминг, Система хостинга и стриминга видео-данных)
         System(users, Каталог пользователей, Система управления доступами и каталогами пользователей)
@@ -49,6 +51,10 @@ Rel(ext_notifications_systems, agronomist, "Отправляет уведомл�
 Rel(ext_notifications_systems, zootechnical, "Отправляет уведомления")
 Rel(ext_notifications_systems, mechanic, "Отправляет уведомления")
 
+Rel(web_central, central, Использует данные для отображения и управления)
+Rel(mobile_app, central, Использует данные для отображения и управления)
+Rel(web_central, departments, Использует данные для отображения и управления)
+Rel(mobile_app, departments, Использует данные для отображения и управления)
 Rel(system, ext_notifications_systems, "Инициирует отправку уведомлений")
 Rel(central, departments, Агрегирует данные)
 Rel_R(departments, central, Отправляет метрики)
