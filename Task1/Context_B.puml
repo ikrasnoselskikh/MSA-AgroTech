@@ -1,6 +1,6 @@
 @startuml
 
-title Система мониторинга свинокомплексов. Контекстная диаграмма C1
+title Система управления AgroTech. Контекстная диаграмма C1
 
 top to bottom direction
 
